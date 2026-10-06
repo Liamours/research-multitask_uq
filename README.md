@@ -89,7 +89,7 @@ The training and inference code is in two repositories.
 | [nnunetv2-multitask](https://github.com/Liamours/nnunetv2-multitask) | Fork of nnU-Net v2 for multi-task segmentation |
 | [segformer-multitask](https://github.com/Liamours/segformer-multitask) | Multi-task SegFormer |
 
-The `code/` folder here is reserved for the evaluation and uncertainty scripts.
+The `code/` folder here holds `hotspot_thresholding/`, the code that makes the hotspot masks from the BS-80K bounding boxes.
 
 ## Figures of the paper
 
