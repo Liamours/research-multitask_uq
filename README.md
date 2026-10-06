@@ -55,7 +55,7 @@ Supplementary material for the paper of the same title. It holds what the paper 
 
 ## Metrics
 
-| Checkpoint | Malignant Dice | Benign Dice | Skeleton Dice | Region AUC without UQ | Region AUC with MetaSeg |
+| Checkpoint | Malignant Dice | Benign Dice | Skeleton Dice | Region AUC, predictive entropy | Region AUC, MetaSeg |
 |:---|---:|---:|---:|---:|---:|
 | `nnunet_single` | 0.4123 | 0.5288 | - | 0.7531 | 0.7741 |
 | `nnunet_early` | 0.4360 | 0.5287 | 0.8819 | 0.7098 | 0.7504 |
@@ -72,7 +72,7 @@ Supplementary material for the paper of the same title. It holds what the paper 
 | `segformer_mid` | 0.3973 | 0.5451 | 0.8810 | 0.7833 | 0.7852 |
 | `segformer_late` | 0.3857 | 0.5473 | 0.8740 | 0.7726 | 0.7675 |
 
-Dice is the mean over the test images whose ground truth contains the class (203 malignant, 473 benign), on the UQ run. Skeleton Dice is the mean over the twelve regions on the standard-pipeline run. Region AUC separates true from false predicted regions, as the mean over the two views and the two classes. Without UQ is the predictive entropy of the model itself, with MetaSeg is the added uncertainty method. \* The proposed method. All other metrics are in the sections above.
+Dice is the mean over the test images whose ground truth contains the class (203 malignant, 473 benign), on the UQ run. Skeleton Dice is the mean over the twelve regions on the standard-pipeline run. Region AUC separates true from false predicted regions, as the mean over the two views and the two classes. Predictive entropy is computed from the softmax output of the model itself, MetaSeg is a trained meta-classifier on region features. \* The proposed method. All other metrics are in the sections above.
 
 ![Malignant Dice and MetaSeg region AUC of the fourteen checkpoints](figures/summary_dice_and_auc.png)
 
