@@ -15,22 +15,22 @@ The `code/` folder here is reserved for the evaluation and uncertainty scripts.
 
 ## Figures
 
-### Label generation
+### Skeleton and hotspot mask generation
 
-![Label generation for BS-80K](figures/fig1_label_generation.png)
+![Skeleton and hotspot mask generation](figures/skeleton_and_hotspot_mask_generation.png)
 
-### Method overview
+### Multi-task nnU-Net with CBAM and MetaSeg filtering
 
-![Method overview](figures/fig2_pipeline.png)
+![Multi-task nnU-Net with CBAM and MetaSeg filtering](figures/multitask_nnunet_cbam_metaseg_pipeline.png)
 
-### Example case
+### Test case with skeleton and hotspot masks
 
-![Example BS-80K test case](figures/fig3_sample_case.png)
+![Test case with skeleton and hotspot masks](figures/test_case_scan_skeleton_hotspot_masks.png)
 
 ### Decoder fission points
 
-![Decoder fission points](figures/fig4_decoder_fission.png)
+![Decoder fission points](figures/decoder_fission_points.png)
 
-### Example results
+### Filtered predictions by uncertainty method
 
-![Example results](figures/fig5_example_results.png)
+![Filtered predictions by uncertainty method](figures/filtered_predictions_by_uq_method.png)
