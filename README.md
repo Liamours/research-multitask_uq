@@ -2,6 +2,10 @@
 
 Supplementary material for the paper of the same title. It holds what the paper cannot state: the results of all fourteen checkpoints, the statistical tests, the uncertainty methods in full, more examples, the training and label details, and the data description.
 
+## Data
+
+The hotspot masks (thresholded from the bounding boxes) and the skeleton masks (manual and predicted) are on Zenodo: [10.5281/zenodo.23190333](https://doi.org/10.5281/zenodo.23190333). The scans are in BS-80K.
+
 ## Sections
 
 | File | Section | Content |
