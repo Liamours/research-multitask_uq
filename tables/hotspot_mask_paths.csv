@@ -1,0 +1,3 @@
+path,boxes,share,median_box_area_pixels
+smooth_percentile_fallback,21873,0.9477036395147314,90.0
+otsu_morph_k7,1207,0.05229636048526863,576.0

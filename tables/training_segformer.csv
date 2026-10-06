@@ -1,0 +1,5 @@
+checkpoint,run,backbone,task_mode,pretrained,decoder_dim,image_size,batch_size,optimizer,lr_backbone,lr_head,weight_decay,scheduler,warmup_iters,loss,loss_ce_weight,loss_dice_weight,task_weights,epochs,seed,amp,checkpoint_metric
+segformer_single,single_task,mit_b2,single_task,nvidia/mit-b2,256,1024x512,4,adamw,1e-05,0.0001,0.01,poly,1500,dice_ce,1.0,1.0,1.0/1.0,100,42,bf16,foreground_mean_dice
+segformer_early,dual_decoder,mit_b2,dual_decoder,nvidia/mit-b2,256,1024x512,4,adamw,1e-05,0.0001,0.01,poly,1500,dice_ce,1.0,1.0,0.8/0.2,100,42,bf16,task_a_foreground_mean_dice
+segformer_mid,dual_fuse,mit_b2,dual_fuse,nvidia/mit-b2,256,1024x512,4,adamw,1e-05,0.0001,0.01,poly,1500,dice_ce,1.0,1.0,0.8/0.2,100,42,bf16,task_a_foreground_mean_dice
+segformer_late,dual_head,mit_b2,dual_head,nvidia/mit-b2,256,1024x512,4,adamw,1e-05,0.0001,0.01,poly,1500,dice_ce,1.0,1.0,0.8/0.2,100,42,bf16,task_a_foreground_mean_dice

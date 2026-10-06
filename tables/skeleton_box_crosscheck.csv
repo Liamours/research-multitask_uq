@@ -1,0 +1,12 @@
+region,n,mean_iou,median_iou,mean_containment_in_template,mean_containment_in_segmentation,mean_template_match_score,full_containment_expected
+chestL,5850,0.5924,0.5867,0.667,0.8527,0.9971,True
+chestR,5850,0.6063,0.6042,0.6766,0.8667,0.9976,True
+elbowL,5850,0.0654,0.0664,0.2064,0.0872,0.9954,False
+elbowR,5850,0.0416,0.0,0.1361,0.0535,0.9953,False
+head,5850,0.7616,0.7626,0.8202,0.925,0.9986,True
+kneeL,5850,0.0376,0.0389,0.1033,0.0555,0.9976,False
+kneeR,5850,0.0343,0.0353,0.0941,0.0509,0.9977,False
+pelvis,5850,0.8286,0.8309,0.8622,0.9545,0.9992,True
+shoL,5850,0.3628,0.3864,0.4914,0.527,0.5709,True
+shoR,5850,0.365,0.3902,0.4871,0.5346,0.5603,True
+vertbra,5850,0.4922,0.4901,0.9797,0.4996,0.9991,True

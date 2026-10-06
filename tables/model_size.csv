@@ -1,0 +1,15 @@
+model,fission,parameters_million,gflops,median_forward_ms,input_shape,checkpoint_parameters_million
+nnunet_single,single-task,45.809,119.554,30.664,1x2x1024x256,
+nnunet_early,Early,72.777,201.998,54.421,1x2x1024x256,
+nnunet_earlymid,Early-Mid,65.155,201.058,58.703,1x2x1024x256,
+nnunet_mid,Mid,45.834,135.560,49.868,1x2x1024x256,
+nnunet_late,Late,45.861,119.991,48.510,1x2x1024x256,
+nnunetcbam_single,single-task,46.061,119.692,58.147,1x2x1024x256,
+nnunetcbam_multidecoder,Early,73.139,202.205,95.713,1x2x1024x256,
+nnunetcbam_earlymid,Early-Mid,65.484,201.265,94.354,1x2x1024x256,
+nnunetcbam_mid,Mid,46.086,135.749,73.503,1x2x1024x256,
+nnunetcbam_multihead,Late,46.114,120.129,60.970,1x2x1024x256,
+segformer_single,single-task,24.723,115.822,87.860,1x3x1024x512,24.723
+segformer_early,Early,25.252,135.300,97.846,1x3x1024x512,25.253
+segformer_mid,Mid,24.989,133.219,92.754,1x3x1024x512,24.990
+segformer_late,Late,24.726,116.040,88.535,1x3x1024x512,24.727

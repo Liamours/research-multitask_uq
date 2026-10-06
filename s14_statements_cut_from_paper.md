@@ -1,0 +1,16 @@
+# S14. Statements cut from the paper
+
+Statements of the first, longer draft that did not fit the six pages, restated with the numbers computed from the metric files of this repository. All values use the UQ run, the test split, and the lesion-bearing Dice unless the row says otherwise.
+
+| Statement | Restated | Source |
+|:---|:---|:---|
+| Region AUC of MetaSeg across the fourteen checkpoints, and the mean over the eleven multi-task checkpoints for each of the four methods | MetaSeg 0.7329 to 0.7874. Mean over the eleven multi-task checkpoints: MetaSeg 0.7655, Standardized max logit 0.7587, Predictive entropy 0.7475, Local gradient UQ 0.7364. Region AUC is the mean over the two views and the two classes. | `uq_discrimination_by_config.csv` |
+| The four methods on the five nnU-Net with CBAM checkpoints, malignant | Keep 92 to 98% of the true regions and remove 12 to 33% of the false regions. FROC sensitivity at 0.5 false positives per case 0.330 to 0.506, against 0.186 to 0.309 for random removal. | `filtering_effects.csv` |
+| The four methods on all fourteen checkpoints, malignant | Remove 12 to 34% of the false regions (median 22%), keep 91 to 98% of the true regions (median 94%), and change the lesion-bearing malignant Dice by -0.0189 to +0.0003 (median -0.0055). | `filtering_effects.csv` |
+| Highest FROC value of all checkpoints and the four methods | 0.613, SegFormer, Mid (`segformer_mid`) with predictive entropy, at 0.5 false positives per case, malignant. | `filtering_effects.csv` |
+| Effect of the skeleton task on the matched malignant hotspots | Significant after Holm correction only for SegFormer, Mid (448 to 485, Holm p 0.004). Pairs of the single-task checkpoint against each multi-task checkpoint of the same backbone. | `stats_lesion_detection_model_pairs.csv` |
+| Proposed method (`nnunetcbam_multidecoder`) with MetaSeg, malignant | Region precision 0.549 to 0.609. Removes 98 of 367 false regions. Hotspot sensitivity at 1.0 false positives per case 0.592, against 0.493 for random removal. The smallest p of its MetaSeg region AUC against any other checkpoint is 0.138. | `filtering_effects.csv`, `stats_auroc_model_pairs.csv` |
+| False positives per case before and after adding the skeleton task, malignant | nnU-Net: single-task 1.75, multi-task 0.71 to 1.48; nnU-Net + CBAM: single-task 1.63, multi-task 0.94 to 1.37; SegFormer: single-task 0.81, multi-task 0.64 to 0.94. The nnU-Net with CBAM checkpoint has more false positives per case than the nnU-Net checkpoint at 3 of the 4 multi-task fission points: Early, Early-Mid, Late. | `filtering_effects.csv` |
+| Dice pairs flagged by the t-test | After Holm correction the t-test flags 13 of 91 malignant Dice pairs and the Wilcoxon test 9. 8 pairs are flagged by both, and 5 only by the t-test. | `stats_dice_model_pairs.csv` |
+| True regions kept at Early fission with CBAM (`nnunetcbam_multidecoder`), malignant | Predictive entropy 0.939, Local gradient UQ 0.933, MetaSeg 0.939, Standardized max logit 0.939. | `filtering_effects.csv` |
+| Limitations of the 9-page draft | Dice on the images with a hotspot does not penalize false predictions on images without one, and the CBAM weights of the multi-task checkpoints come from the single-task checkpoints. | S1 and S9 |

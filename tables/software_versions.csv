@@ -1,0 +1,6 @@
+software,version,source
+PyTorch,2.11.0+cu128,debug.json of the nnU-Net runs
+PyTorch (SegFormer environment),2.11.0+cu128,uv.lock of segformer_multitask
+Transformers,5.16.1,uv.lock of segformer_multitask
+nnU-Net (multi-task fork),2.8.0,pyproject.toml of nnunetv2_multitask
+GPU of the nnU-Net runs,NVIDIA GeForce RTX 5070 Ti,debug.json of the nnU-Net runs

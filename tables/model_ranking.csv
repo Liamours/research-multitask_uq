@@ -1,0 +1,15 @@
+name,architecture,fission,malignant_dice,metaseg,dice_rank,auc_rank,rank_sum
+nnunetcbam_mid,nnU-Net + CBAM,Mid,0.44072681456427937,0.7846895214604498,4,3,7
+nnunetcbam_earlymid,nnU-Net + CBAM,Early-Mid,0.44534146594848645,0.7814810703209243,3,6,9
+nnunet_mid,nnU-Net,Mid,0.43213740593465383,0.7818114794894823,6,5,11
+segformer_mid,SegFormer,Middle,0.397257734664004,0.7852434304030063,11,2,13
+segformer_early,SegFormer,Early,0.38248679133048896,0.7873649397598516,13,1,14
+nnunetcbam_multihead,nnU-Net + CBAM,Late,0.4505746014718003,0.7470865426002694,2,12,14
+nnunetcbam_multidecoder,nnU-Net + CBAM,Early,0.47653586252307967,0.7344115798030098,1,13,14
+nnunet_late,nnU-Net,Late,0.43042181853349104,0.7678345911890282,7,8,15
+nnunet_early,nnU-Net,Early,0.4359922967493558,0.7504090608748399,5,11,16
+nnunet_single,nnU-Net,single-task,0.4123269840345067,0.7741063512802554,10,7,17
+segformer_single,SegFormer,single-task,0.3704837518599947,0.7840940446848751,14,4,18
+nnunetcbam_single,nnU-Net + CBAM,single-task,0.4288708170940899,0.7599436212938733,8,10,18
+segformer_late,SegFormer,Late,0.3856665714753265,0.7675210975285324,12,9,21
+nnunet_earlymid,nnU-Net,Early-Mid,0.4207847118182272,0.7328937037196246,9,14,23

@@ -1,0 +1,10 @@
+split,view,cases,boxes_benign,boxes_malignant,images,images_with_benign,images_with_malignant,regions_benign,regions_malignant,skeleton_manual,skeleton_pseudo
+test,anterior,293,834,354,293,259,110,830,353,180,113
+test,posterior,293,412,352,293,214,93,410,350,165,128
+train,anterior,2340,7146,2540,2340,2105,852,7134,2532,1387,953
+train,posterior,2340,3326,2742,2340,1720,752,3323,2720,1351,989
+validation,anterior,292,901,385,292,256,103,901,383,176,116
+validation,posterior,292,379,470,292,203,95,379,466,155,137
+test,both,293,1246,706,586,473,203,1240,703,345,241
+train,both,2340,10472,5282,4680,3825,1604,10457,5252,2738,1942
+validation,both,292,1280,855,584,459,198,1280,849,331,253

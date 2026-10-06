@@ -1,0 +1,8 @@
+setting,value
+configuration,2d
+classes,13
+training_views,3239
+patch_size,1024x256
+batch_size,12
+normalization,ZScoreNormalization
+predicted_views,2901
