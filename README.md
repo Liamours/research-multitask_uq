@@ -55,24 +55,24 @@ Supplementary material for the paper of the same title. It holds what the paper 
 
 ## Metrics
 
-| Checkpoint | Malignant Dice | Benign Dice | Skeleton Dice | Region AUC, predictive entropy | Region AUC, MetaSeg |
+| Checkpoint | Malignant Dice | Benign Dice | Skeleton Dice | AUC without UQ | AUC with MetaSeg |
 |:---|---:|---:|---:|---:|---:|
-| `nnunet_single` | 0.4123 | 0.5288 | - | 0.7531 | 0.7741 |
-| `nnunet_early` | 0.4360 | 0.5287 | 0.8819 | 0.7098 | 0.7504 |
-| `nnunet_earlymid` | 0.4208 | 0.5418 | 0.8817 | 0.7183 | 0.7329 |
-| `nnunet_mid` | 0.4321 | 0.5232 | 0.8458 | 0.7640 | 0.7818 |
-| `nnunet_late` | 0.4304 | 0.5472 | 0.8506 | 0.7626 | 0.7678 |
-| `nnunetcbam_single` | 0.4289 | 0.5220 | - | 0.7397 | 0.7599 |
-| `nnunetcbam_multidecoder`* | 0.4765 | 0.5390 | 0.8810 | 0.6982 | 0.7344 |
-| `nnunetcbam_earlymid` | 0.4453 | 0.5347 | 0.8805 | 0.7417 | 0.7815 |
-| `nnunetcbam_mid` | 0.4407 | 0.5286 | 0.8403 | 0.7593 | 0.7847 |
-| `nnunetcbam_multihead` | 0.4506 | 0.5486 | 0.8392 | 0.7274 | 0.7471 |
-| `segformer_single` | 0.3705 | 0.5319 | - | 0.7859 | 0.7841 |
-| `segformer_early` | 0.3825 | 0.5498 | 0.8815 | 0.7856 | 0.7874 |
-| `segformer_mid` | 0.3973 | 0.5451 | 0.8810 | 0.7833 | 0.7852 |
-| `segformer_late` | 0.3857 | 0.5473 | 0.8740 | 0.7726 | 0.7675 |
+| `nnunet_single` | 0.4123 | 0.5288 | - | 0.8202 | 0.7741 |
+| `nnunet_early` | 0.4360 | 0.5287 | 0.8819 | 0.8375 | 0.7504 |
+| `nnunet_earlymid` | 0.4208 | 0.5418 | 0.8817 | 0.8205 | 0.7329 |
+| `nnunet_mid` | 0.4321 | 0.5232 | 0.8458 | 0.8412 | 0.7818 |
+| `nnunet_late` | 0.4304 | 0.5472 | 0.8506 | 0.8425 | 0.7678 |
+| `nnunetcbam_single` | 0.4289 | 0.5220 | - | 0.8119 | 0.7599 |
+| `nnunetcbam_multidecoder`* | 0.4765 | 0.5390 | 0.8810 | 0.8398 | 0.7344 |
+| `nnunetcbam_earlymid` | 0.4453 | 0.5347 | 0.8805 | 0.8188 | 0.7815 |
+| `nnunetcbam_mid` | 0.4407 | 0.5286 | 0.8403 | 0.8243 | 0.7847 |
+| `nnunetcbam_multihead` | 0.4506 | 0.5486 | 0.8392 | 0.8173 | 0.7471 |
+| `segformer_single` | 0.3705 | 0.5319 | - | 0.8262 | 0.7841 |
+| `segformer_early` | 0.3825 | 0.5498 | 0.8815 | 0.8176 | 0.7874 |
+| `segformer_mid` | 0.3973 | 0.5451 | 0.8810 | 0.8350 | 0.7852 |
+| `segformer_late` | 0.3857 | 0.5473 | 0.8740 | 0.8357 | 0.7675 |
 
-Dice is the mean over the test images whose ground truth contains the class (203 malignant, 473 benign), on the UQ run. Skeleton Dice is the mean over the twelve regions on the standard-pipeline run. Region AUC separates true from false predicted regions, as the mean over the two views and the two classes. Predictive entropy is computed from the softmax output of the model itself, MetaSeg is a trained meta-classifier on region features. \* The proposed method. All other metrics are in the sections above.
+Dice is the mean over the test images whose ground truth contains the class (203 malignant, 473 benign), on the UQ run. Skeleton Dice is the mean over the twelve regions on the standard-pipeline run. AUC without UQ detects the images with a malignant hotspot from the predicted malignant area of the model, on the standard-pipeline predictions (203 positive and 383 negative images). AUC with MetaSeg separates true from false predicted regions with the MetaSeg score, as the mean over the two views and the two classes. \* The proposed method. All other metrics are in the sections above.
 
 ![Malignant Dice and MetaSeg region AUC of the fourteen checkpoints](figures/summary_dice_and_auc.png)
 
@@ -107,6 +107,7 @@ The sections are rebuilt from `tables/` and `figures/` alone. The two collection
 |:---|:---|
 | Section files and this README | `uv run --no-project --with pandas python scripts/build_sections.py` |
 | `tables/` and the copied figures | `uv run --no-project --with pandas --with tqdm python scripts/collect_sources.py --project <project folder>` |
-| Figures of S5, S7, S9, S11 | `uv run --no-project --with pandas --with numpy --with pillow --with matplotlib --with tqdm python scripts/make_figures.py all --project <project folder>` |
+| `tables/image_level_auc.csv` | `uv run --no-project --with pandas --with numpy --with pillow --with matplotlib --with tqdm python scripts/compute_image_auc.py --project <project folder>` |
+| Figures of S5, S7, S9, S11 and the metrics figure | `uv run --no-project --with pandas --with numpy --with pillow --with matplotlib --with tqdm python scripts/make_figures.py all --project <project folder>` |
 
 The metric files in `tables/` were computed from the saved test predictions and uncertainty records by the scripts of the project. The FROC plots of S6, the training progress plots of S9, and the diagrams of S10 are copied from the project, not redrawn here.

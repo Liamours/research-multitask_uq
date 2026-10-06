@@ -43,7 +43,7 @@ def readme() -> None:
     seg = read_table("seg_published.csv").set_index("model")
     config = read_table("uq_discrimination_by_config.csv")
     auc = config[config.method == "metaseg"].groupby("model").auroc.mean()
-    own = config[config.method == "mean_normalized_entropy"].groupby("model").auroc.mean()
+    own = read_table("image_level_auc.csv").set_index("model").auc
     def dice_of(model, target):
         return dice[(dice.model == model) & (dice.target == target)].iloc[0].uq_run_dice_lesion_bearing
     metrics = [[f"`{m}`" + ("*" if m == PROPOSED else ""), num(dice_of(m, "malignant")), num(dice_of(m, "benign")),
@@ -66,8 +66,8 @@ def readme() -> None:
         md_table(["Checkpoint", "Backbone", "Training", "Fission point"], rows, "llll"),
         "\\* The proposed method: nnU-Net with CBAM at Early fission, with MetaSeg filtering.",
         "## Metrics",
-        md_table(["Checkpoint", "Malignant Dice", "Benign Dice", "Skeleton Dice", "Region AUC, predictive entropy", "Region AUC, MetaSeg"], metrics),
-        "Dice is the mean over the test images whose ground truth contains the class (203 malignant, 473 benign), on the UQ run. Skeleton Dice is the mean over the twelve regions on the standard-pipeline run. Region AUC separates true from false predicted regions, as the mean over the two views and the two classes. Predictive entropy is computed from the softmax output of the model itself, MetaSeg is a trained meta-classifier on region features. \\* The proposed method. All other metrics are in the sections above.",
+        md_table(["Checkpoint", "Malignant Dice", "Benign Dice", "Skeleton Dice", "AUC without UQ", "AUC with MetaSeg"], metrics),
+        "Dice is the mean over the test images whose ground truth contains the class (203 malignant, 473 benign), on the UQ run. Skeleton Dice is the mean over the twelve regions on the standard-pipeline run. AUC without UQ detects the images with a malignant hotspot from the predicted malignant area of the model, on the standard-pipeline predictions (203 positive and 383 negative images). AUC with MetaSeg separates true from false predicted regions with the MetaSeg score, as the mean over the two views and the two classes. \\* The proposed method. All other metrics are in the sections above.",
         "![Malignant Dice and MetaSeg region AUC of the fourteen checkpoints](figures/summary_dice_and_auc.png)",
         "## Code",
         "The training and inference code is in two repositories.",
@@ -87,7 +87,8 @@ def readme() -> None:
         md_table(["Output", "Command"], [
             ["Section files and this README", "`uv run --no-project --with pandas python scripts/build_sections.py`"],
             ["`tables/` and the copied figures", "`uv run --no-project --with pandas --with tqdm python scripts/collect_sources.py --project <project folder>`"],
-            ["Figures of S5, S7, S9, S11", "`uv run --no-project --with pandas --with numpy --with pillow --with matplotlib --with tqdm python scripts/make_figures.py all --project <project folder>`"],
+            ["`tables/image_level_auc.csv`", "`uv run --no-project --with pandas --with numpy --with pillow --with matplotlib --with tqdm python scripts/compute_image_auc.py --project <project folder>`"],
+            ["Figures of S5, S7, S9, S11 and the metrics figure", "`uv run --no-project --with pandas --with numpy --with pillow --with matplotlib --with tqdm python scripts/make_figures.py all --project <project folder>`"],
         ], "ll"),
         "The metric files in `tables/` were computed from the saved test predictions and uncertainty records by the scripts of the project. The FROC plots of S6, the training progress plots of S9, and the diagrams of S10 are copied from the project, not redrawn here.",
     ]
