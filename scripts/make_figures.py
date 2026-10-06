@@ -19,7 +19,7 @@ import pandas as pd
 from PIL import Image
 from tqdm import tqdm
 
-from common import BACKBONE, project_folder, BENIGN_RGB, FIGURES, FISSION, MALIGNANT_RGB, MODEL_ORDER, ROOT, TABLES, label, read_table
+from common import BACKBONE, PROPOSED, project_folder, BENIGN_RGB, FIGURES, FISSION, MALIGNANT_RGB, MODEL_ORDER, ROOT, TABLES, label, read_table
 
 plt.rcParams.update({"font.family": "serif", "font.size": 8, "axes.linewidth": 0.5})
 
@@ -225,13 +225,48 @@ def hotspot(project: Path) -> None:
     plt.close(fig)
 
 
+def summary_values() -> pd.DataFrame:
+    dice = read_table("dice_by_model.csv")
+    malignant = dice[dice.target == "malignant"].set_index("model").uq_run_dice_lesion_bearing
+    config = read_table("uq_discrimination_by_config.csv")
+    auc = config[config.method == "metaseg"].groupby("model").auroc.mean()
+    return pd.DataFrame({"dice": malignant, "auc": auc}).reindex(MODEL_ORDER)
+
+
+def summary(project: Path) -> None:
+    values = summary_values()
+    rows, ticks, position = [], [], 0
+    for index, model in enumerate(MODEL_ORDER):
+        if index and BACKBONE[model] != BACKBONE[MODEL_ORDER[index - 1]]:
+            position += 1
+        rows.append(position)
+        ticks.append(f"{FISSION[model]}")
+        position += 1
+    fig, axes = plt.subplots(1, 2, figsize=(7.4, 4.6), sharey=True)
+    for axis, column, title in zip(axes, ("dice", "auc"), ("Malignant Dice", "MetaSeg region AUC")):
+        colors = ["black" if model == PROPOSED else "#a8a8a8" for model in MODEL_ORDER]
+        axis.barh(rows, values[column], color=colors, height=0.72)
+        for y, value in zip(rows, values[column]):
+            axis.text(value + 0.006, y, f"{value:.4f}", va="center", fontsize=6.5)
+        axis.set_xlim(0, 0.95), axis.set_title(title, fontsize=9)
+        axis.spines[["top", "right"]].set_visible(False)
+    axes[0].invert_yaxis()
+    axes[0].set_yticks(rows, ticks, fontsize=7.5)
+    for backbone in dict.fromkeys(BACKBONE[m] for m in MODEL_ORDER):
+        members = [row for row, model in zip(rows, MODEL_ORDER) if BACKBONE[model] == backbone]
+        axes[0].text(-0.30, sum(members) / len(members), backbone, ha="right", va="center", fontsize=8, fontweight="bold", transform=axes[0].get_yaxis_transform())
+    fig.tight_layout()
+    fig.savefig(FIGURES / "summary_dice_and_auc.png", dpi=200, bbox_inches="tight")
+    plt.close(fig)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=["uq_examples", "comparison", "curves", "hotspot", "all"])
+    parser.add_argument("command", choices=["uq_examples", "comparison", "curves", "hotspot", "summary", "all"])
     parser.add_argument("--project", type=Path, default=ROOT.parents[1])
     args = parser.parse_args()
     project = args.project.resolve()
-    commands = {"uq_examples": uq_examples, "comparison": comparison, "curves": curves, "hotspot": hotspot}
+    commands = {"uq_examples": uq_examples, "comparison": comparison, "curves": curves, "hotspot": hotspot, "summary": summary}
     for name in ([args.command] if args.command != "all" else list(commands)):
         commands[name](project)
 

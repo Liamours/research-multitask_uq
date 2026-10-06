@@ -6,7 +6,7 @@ The tables and figures are produced by scripts/collect_sources.py and scripts/ma
 """
 from __future__ import annotations
 
-from common import CHECKPOINTS, PROPOSED, ROOT, md_table
+from common import CHECKPOINTS, FISSION, MODEL_ORDER, PROPOSED, ROOT, md_table, num, read_table
 from sections_examples import section_5, section_6, section_7, section_8
 from sections_method import section_9, section_10, section_11, section_12, section_13, section_14
 from sections_results import section_1, section_2, section_3, section_4
@@ -38,8 +38,15 @@ def readme() -> None:
     rows = []
     for name, backbone, fission in CHECKPOINTS:
         task = "single-task" if fission == "single-task" else "multi-task"
-        marker = "proposed method" if name == PROPOSED else ""
-        rows.append([f"`{name}`", backbone, task, "-" if fission == "single-task" else fission, marker or "-"])
+        rows.append([f"`{name}`" + ("*" if name == PROPOSED else ""), backbone, task, "-" if fission == "single-task" else fission])
+    dice = read_table("dice_by_model.csv")
+    seg = read_table("seg_published.csv").set_index("model")
+    config = read_table("uq_discrimination_by_config.csv")
+    auc = config[config.method == "metaseg"].groupby("model").auroc.mean()
+    def dice_of(model, target):
+        return dice[(dice.model == model) & (dice.target == target)].iloc[0].uq_run_dice_lesion_bearing
+    metrics = [[f"`{m}`" + ("*" if m == PROPOSED else ""), num(dice_of(m, "malignant")), num(dice_of(m, "benign")),
+                "-" if FISSION[m] == "single-task" else num(seg.loc[m]["bone.pixel_mean.dice"]), num(auc[m])] for m in MODEL_ORDER]
     parts = [
         "# Multi-Task Hotspot and Skeleton Segmentation on Whole-Body Bone Scintigraphy with Uncertainty Quantification",
         "Supplementary material for the paper of the same title. It holds what the paper cannot state: the results of all fourteen checkpoints, the statistical tests, the uncertainty methods in full, more examples, the training and label details, and the data description.",
@@ -55,7 +62,12 @@ def readme() -> None:
             ["Scope", "Nothing is trained or re-run to write these sections. External classification and saliency analyses are not part of them."],
         ], "ll"),
         "## Checkpoints",
-        md_table(["Checkpoint", "Backbone", "Training", "Fission point", "Note"], rows, "lllll"),
+        md_table(["Checkpoint", "Backbone", "Training", "Fission point"], rows, "llll"),
+        "\\* The proposed method: nnU-Net with CBAM at Early fission, with MetaSeg filtering.",
+        "## Metrics",
+        md_table(["Checkpoint", "Malignant Dice", "Benign Dice", "Skeleton Dice", "MetaSeg region AUC"], metrics),
+        "Dice is the mean over the test images whose ground truth contains the class (203 malignant, 473 benign), on the UQ run. Skeleton Dice is the mean over the twelve regions on the standard-pipeline run. Region AUC is the mean over the two views and the two classes. \\* The proposed method. All other metrics are in the sections above.",
+        "![Malignant Dice and MetaSeg region AUC of the fourteen checkpoints](figures/summary_dice_and_auc.png)",
         "## Code",
         "The training and inference code is in two repositories.",
         md_table(["Repository", "Content"], [

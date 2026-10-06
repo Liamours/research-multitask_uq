@@ -1,0 +1,14 @@
+{
+  "algorithm": {
+    "kernel_size": 7,
+    "close_iterations": 2,
+    "open_iterations": 1,
+    "max_coverage": 0.85,
+    "max_border_contact": 0.65,
+    "percentile": 75.0,
+    "smoothing_sigma": 1.5
+  },
+  "labels": {"normal": 1, "abnormal": 2},
+  "raw_dir": "data/whole_body-raster-raw",
+  "image_shape": [1024, 256]
+}

@@ -34,22 +34,47 @@ Supplementary material for the paper of the same title. It holds what the paper 
 
 ## Checkpoints
 
-| Checkpoint | Backbone | Training | Fission point | Note |
-|:---|:---|:---|:---|:---|
-| `nnunet_single` | nnU-Net | single-task | - | - |
-| `nnunet_early` | nnU-Net | multi-task | Early | - |
-| `nnunet_earlymid` | nnU-Net | multi-task | Early-Mid | - |
-| `nnunet_mid` | nnU-Net | multi-task | Mid | - |
-| `nnunet_late` | nnU-Net | multi-task | Late | - |
-| `nnunetcbam_single` | nnU-Net + CBAM | single-task | - | - |
-| `nnunetcbam_multidecoder` | nnU-Net + CBAM | multi-task | Early | proposed method |
-| `nnunetcbam_earlymid` | nnU-Net + CBAM | multi-task | Early-Mid | - |
-| `nnunetcbam_mid` | nnU-Net + CBAM | multi-task | Mid | - |
-| `nnunetcbam_multihead` | nnU-Net + CBAM | multi-task | Late | - |
-| `segformer_single` | SegFormer | single-task | - | - |
-| `segformer_early` | SegFormer | multi-task | Early | - |
-| `segformer_mid` | SegFormer | multi-task | Mid | - |
-| `segformer_late` | SegFormer | multi-task | Late | - |
+| Checkpoint | Backbone | Training | Fission point |
+|:---|:---|:---|:---|
+| `nnunet_single` | nnU-Net | single-task | - |
+| `nnunet_early` | nnU-Net | multi-task | Early |
+| `nnunet_earlymid` | nnU-Net | multi-task | Early-Mid |
+| `nnunet_mid` | nnU-Net | multi-task | Mid |
+| `nnunet_late` | nnU-Net | multi-task | Late |
+| `nnunetcbam_single` | nnU-Net + CBAM | single-task | - |
+| `nnunetcbam_multidecoder`* | nnU-Net + CBAM | multi-task | Early |
+| `nnunetcbam_earlymid` | nnU-Net + CBAM | multi-task | Early-Mid |
+| `nnunetcbam_mid` | nnU-Net + CBAM | multi-task | Mid |
+| `nnunetcbam_multihead` | nnU-Net + CBAM | multi-task | Late |
+| `segformer_single` | SegFormer | single-task | - |
+| `segformer_early` | SegFormer | multi-task | Early |
+| `segformer_mid` | SegFormer | multi-task | Mid |
+| `segformer_late` | SegFormer | multi-task | Late |
+
+\* The proposed method: nnU-Net with CBAM at Early fission, with MetaSeg filtering.
+
+## Metrics
+
+| Checkpoint | Malignant Dice | Benign Dice | Skeleton Dice | MetaSeg region AUC |
+|:---|---:|---:|---:|---:|
+| `nnunet_single` | 0.4123 | 0.5288 | - | 0.7741 |
+| `nnunet_early` | 0.4360 | 0.5287 | 0.8819 | 0.7504 |
+| `nnunet_earlymid` | 0.4208 | 0.5418 | 0.8817 | 0.7329 |
+| `nnunet_mid` | 0.4321 | 0.5232 | 0.8458 | 0.7818 |
+| `nnunet_late` | 0.4304 | 0.5472 | 0.8506 | 0.7678 |
+| `nnunetcbam_single` | 0.4289 | 0.5220 | - | 0.7599 |
+| `nnunetcbam_multidecoder`* | 0.4765 | 0.5390 | 0.8810 | 0.7344 |
+| `nnunetcbam_earlymid` | 0.4453 | 0.5347 | 0.8805 | 0.7815 |
+| `nnunetcbam_mid` | 0.4407 | 0.5286 | 0.8403 | 0.7847 |
+| `nnunetcbam_multihead` | 0.4506 | 0.5486 | 0.8392 | 0.7471 |
+| `segformer_single` | 0.3705 | 0.5319 | - | 0.7841 |
+| `segformer_early` | 0.3825 | 0.5498 | 0.8815 | 0.7874 |
+| `segformer_mid` | 0.3973 | 0.5451 | 0.8810 | 0.7852 |
+| `segformer_late` | 0.3857 | 0.5473 | 0.8740 | 0.7675 |
+
+Dice is the mean over the test images whose ground truth contains the class (203 malignant, 473 benign), on the UQ run. Skeleton Dice is the mean over the twelve regions on the standard-pipeline run. Region AUC is the mean over the two views and the two classes. \* The proposed method. All other metrics are in the sections above.
+
+![Malignant Dice and MetaSeg region AUC of the fourteen checkpoints](figures/summary_dice_and_auc.png)
 
 ## Code
 
