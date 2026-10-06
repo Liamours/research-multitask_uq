@@ -21,3 +21,17 @@ The case identifiers are sorted and shuffled with NumPy `default_rng` and seed 4
 | test | both | 293 | 586 | 1,246 | 706 | 473 | 203 | 1,240 | 703 | 345 | 241 |
 
 Boxes are the bounding boxes of BS-80K. Regions are the connected components of the hotspot masks made from the boxes. Skeleton columns count the views by the source of the skeleton mask. An image is one view of a case. Source: `tables/split_counts.csv`.
+
+## Data record of the masks
+
+The hotspot and skeleton masks are published as one data record of five files. The scans are not part of it.
+
+| File | Content |
+|:---|:---|
+| `hotspot_masks.zip` | 5,462 masks, one for each view with hotspot boxes, pixel values 0 background, 1 benign, 2 malignant |
+| `skeleton_masks.zip` | 6,494 masks, one for every view, pixel values 0 background and 1 to 12 for the twelve skeleton regions |
+| `manifest.csv` | One row per mask: mask set, patient, study, view, path in the archive, source, split, SHA-256, size in bytes |
+| `SHA256SUMS.txt` | SHA-256 of the two archives |
+| `README.md` | Pixel values, method, and splits |
+
+Inside the archives a mask is `<mask set>/<patient>/<study>/<view>.png`, 1024 x 256 pixels, 8 bit, aligned with the scan of the same patient, study, and view. The source of a skeleton mask is `manual` or `predicted`, and the split is `train`, `validation`, `test`, or `unused` for the 322 patients that are not among the 2,925 cases. The package is built by `scripts/package_zenodo_record.py`.
