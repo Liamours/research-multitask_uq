@@ -43,10 +43,11 @@ def readme() -> None:
     seg = read_table("seg_published.csv").set_index("model")
     config = read_table("uq_discrimination_by_config.csv")
     auc = config[config.method == "metaseg"].groupby("model").auroc.mean()
+    own = config[config.method == "mean_normalized_entropy"].groupby("model").auroc.mean()
     def dice_of(model, target):
         return dice[(dice.model == model) & (dice.target == target)].iloc[0].uq_run_dice_lesion_bearing
     metrics = [[f"`{m}`" + ("*" if m == PROPOSED else ""), num(dice_of(m, "malignant")), num(dice_of(m, "benign")),
-                "-" if FISSION[m] == "single-task" else num(seg.loc[m]["bone.pixel_mean.dice"]), num(auc[m])] for m in MODEL_ORDER]
+                "-" if FISSION[m] == "single-task" else num(seg.loc[m]["bone.pixel_mean.dice"]), num(own[m]), num(auc[m])] for m in MODEL_ORDER]
     parts = [
         "# Multi-Task Hotspot and Skeleton Segmentation on Whole-Body Bone Scintigraphy with Uncertainty Quantification",
         "Supplementary material for the paper of the same title. It holds what the paper cannot state: the results of all fourteen checkpoints, the statistical tests, the uncertainty methods in full, more examples, the training and label details, and the data description.",
@@ -65,8 +66,8 @@ def readme() -> None:
         md_table(["Checkpoint", "Backbone", "Training", "Fission point"], rows, "llll"),
         "\\* The proposed method: nnU-Net with CBAM at Early fission, with MetaSeg filtering.",
         "## Metrics",
-        md_table(["Checkpoint", "Malignant Dice", "Benign Dice", "Skeleton Dice", "MetaSeg region AUC"], metrics),
-        "Dice is the mean over the test images whose ground truth contains the class (203 malignant, 473 benign), on the UQ run. Skeleton Dice is the mean over the twelve regions on the standard-pipeline run. Region AUC is the mean over the two views and the two classes. \\* The proposed method. All other metrics are in the sections above.",
+        md_table(["Checkpoint", "Malignant Dice", "Benign Dice", "Skeleton Dice", "Region AUC without UQ", "Region AUC with MetaSeg"], metrics),
+        "Dice is the mean over the test images whose ground truth contains the class (203 malignant, 473 benign), on the UQ run. Skeleton Dice is the mean over the twelve regions on the standard-pipeline run. Region AUC separates true from false predicted regions, as the mean over the two views and the two classes. Without UQ is the predictive entropy of the model itself, with MetaSeg is the added uncertainty method. \\* The proposed method. All other metrics are in the sections above.",
         "![Malignant Dice and MetaSeg region AUC of the fourteen checkpoints](figures/summary_dice_and_auc.png)",
         "## Code",
         "The training and inference code is in two repositories.",

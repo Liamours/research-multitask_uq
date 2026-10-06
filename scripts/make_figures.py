@@ -230,7 +230,8 @@ def summary_values() -> pd.DataFrame:
     malignant = dice[dice.target == "malignant"].set_index("model").uq_run_dice_lesion_bearing
     config = read_table("uq_discrimination_by_config.csv")
     auc = config[config.method == "metaseg"].groupby("model").auroc.mean()
-    return pd.DataFrame({"dice": malignant, "auc": auc}).reindex(MODEL_ORDER)
+    own = config[config.method == "mean_normalized_entropy"].groupby("model").auroc.mean()
+    return pd.DataFrame({"dice": malignant, "own": own, "auc": auc}).reindex(MODEL_ORDER)
 
 
 def summary(project: Path) -> None:
@@ -242,10 +243,12 @@ def summary(project: Path) -> None:
         rows.append(position)
         ticks.append(f"{FISSION[model]}")
         position += 1
-    fig, axes = plt.subplots(1, 2, figsize=(7.4, 4.6), sharey=True)
-    for axis, column, title in zip(axes, ("dice", "auc"), ("Malignant Dice", "MetaSeg region AUC")):
-        colors = ["black" if model == PROPOSED else "#a8a8a8" for model in MODEL_ORDER]
-        axis.barh(rows, values[column], color=colors, height=0.72)
+    fig, axes = plt.subplots(1, 3, figsize=(10.2, 4.6), sharey=True)
+    for axis, column, title in zip(axes, ("dice", "own", "auc"), ("Malignant Dice", "Region AUC, predictive entropy", "Region AUC, MetaSeg")):
+        best = values[column].idxmax()
+        colors = ["#9fd8a8" if model == best else "#a8a8a8" for model in MODEL_ORDER]
+        edges = ["black" if model == PROPOSED else "none" for model in MODEL_ORDER]
+        axis.barh(rows, values[column], color=colors, edgecolor=edges, linewidth=1.3, height=0.72)
         for y, value in zip(rows, values[column]):
             axis.text(value + 0.006, y, f"{value:.4f}", va="center", fontsize=6.5)
         axis.set_xlim(0, 0.95), axis.set_title(title, fontsize=9)
