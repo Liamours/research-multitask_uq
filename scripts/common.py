@@ -62,11 +62,11 @@ DICE_UQ_RUN = (
 
 
 def project_folder(project: Path, name: str) -> Path:
-    """The one folder draft/<paper>/<name> of the project, found without naming the paper."""
-    matches = sorted(project.glob(f"draft/*/{name}"))
-    if len(matches) != 1:
-        raise FileNotFoundError(f"expected one draft/*/{name} folder in {project}, found {len(matches)}")
-    return matches[0]
+    """The folder draft/<name> of the project."""
+    folder = project / "draft" / name
+    if not folder.is_dir():
+        raise FileNotFoundError(f"expected the folder draft/{name} in {project}")
+    return folder
 
 
 def read_table(name: str) -> pd.DataFrame:
